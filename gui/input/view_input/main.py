@@ -1,17 +1,15 @@
-from pathlib import Path
-
 from tkinter import Frame, Canvas, Button, PhotoImage, ttk, StringVar, scrolledtext, Scrollbar, Text,font
 from pandastable import Table, TableModel
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+from gui.config import *
+from pathlib import Path
 OUTPUT_PATH = Path(__file__).parent
+DATA_PATH = OUTPUT_PATH.parent.parent / "algo" / "input.csv"
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-DATA_PATH = OUTPUT_PATH.parent.parent.parent / Path("./algo/input.csv")
-
-
 def relative_to_assets(path: str) -> Path:
+
     return ASSETS_PATH / Path(path)
 
 class ViewInput(Frame):
@@ -29,8 +27,8 @@ class ViewInput(Frame):
             highlightthickness=0,
             relief="ridge",
         )
+        self.canvas.place(x=0,y=0)
 
-        self.canvas.place(x=0, y=0)
         self.canvas.create_rectangle(
             40.0, 14.0, 742.0, 16.0, fill="#EFEFEF", outline=""
         )
@@ -44,25 +42,25 @@ class ViewInput(Frame):
             anchor="nw",
             text="View Input Problem",
             fill="#5E95FF",
-            font=("Montserrat Bold", 26 * -1),
+            font=(FONT_BOLD, 26 * -1),
         )
 
-        self.canvas.create_text(
-            40.0,
-            367.0,
-            anchor="nw",
-            text="Actions:",
-            fill="#5E95FF",
-            font=("Montserrat Bold", 26 * -1),
-        )
+        # self.canvas.create_text(
+        #     40.0,
+        #     367.0,
+        #     anchor="nw",
+        #     text="Actions:",
+        #     fill="#5E95FF",
+        #     font=(FONT_BOLD, 26 * -1),
+        # )
 
         self.canvas.create_text(
             116.0,
             65.0,
             anchor="nw",
-            text="lorem ipsum",
+            text="",
             fill="#808080",
-            font=("Montserrat SemiBold", 16 * -1),
+            font=(FONT, 16 * -1),
         )
         self.button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
         self.navigate_back_btn = Button(
@@ -79,9 +77,9 @@ class ViewInput(Frame):
         self.scrolled_frame = Frame(self)
         self.scrolled_frame.place(x=40, y=101, width=702, height=228)
 
-        # Create horizontal scrollbar
-        self.x_scrollbar = Scrollbar(self.scrolled_frame, orient="horizontal")
-        self.x_scrollbar.pack(side="bottom", fill="x")
+        # # Create horizontal scrollbar
+        # self.x_scrollbar = Scrollbar(self.scrolled_frame, orient="horizontal")
+        # self.x_scrollbar.pack(side="bottom", fill="x")
 
         # Create vertical scrollbar
         self.y_scrollbar = Scrollbar(self.scrolled_frame)
@@ -92,13 +90,13 @@ class ViewInput(Frame):
             bg="#EFEFEF",
             width=702,
             height=228,
-            xscrollcommand=self.x_scrollbar.set,
+            # xscrollcommand=self.x_scrollbar.set,
             yscrollcommand=self.y_scrollbar.set
         )
         self.input_canvas.pack(side="left", fill="both", expand=True)
 
         # Link scrollbars with Canvas
-        self.x_scrollbar.config(command=self.input_canvas.xview)
+        # self.x_scrollbar.config(command=self.input_canvas.xview)
         self.y_scrollbar.config(command=self.input_canvas.yview)
 
         # Create a frame inside the canvas to hold the text
@@ -106,10 +104,10 @@ class ViewInput(Frame):
         self.text_window = self.input_canvas.create_window((0, 0), window=self.text_frame, anchor="nw")
 
         # Add the LaTeX content to the frame
-        self.text_widget = Text(self.text_frame, bg="#EFEFEF", font=("Montserrat SemiBold", 16), wrap="none")
+        self.text_widget = Text(self.text_frame, bg="#EFEFEF", font=(FONT, 16), wrap="none")
         self.text_widget.pack(fill="both", expand=True)
 
-        self.text_widget.tag_configure("subscript", offset=-4, font=("Montserrat SemiBold", 10))
+        self.text_widget.tag_configure("subscript", offset=-4, font=(FONT, 10))
         self.text_widget.tag_configure("red", foreground="#ff505f")
         self.text_widget.tag_configure("blue", foreground="#5E95FF")
 
@@ -195,6 +193,8 @@ class ViewInput(Frame):
             # Tô màu xanh cho dòng 1 và 3
             if index == 0 or index == 2:
                 self.text_widget.tag_add("blue", f"{index+1}.0", f"{index+1}.end")
+        self.text_widget.config(state="disabled")  # Disable editing
+
     
     def on_frame_configure(self, event):
         # Reset the scroll region to encompass the inner frame

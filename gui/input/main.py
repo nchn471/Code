@@ -1,18 +1,12 @@
-from pathlib import Path
 
 from tkinter import Frame, Canvas, Entry, Text, Button, PhotoImage, messagebox
 
 from .create_input.main import CreateInput
 from .view_input.main import ViewInput
+from gui.config import *
 import pandas as pd
 
-OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-DATA_PATH = OUTPUT_PATH.parent.parent.parent / Path("./algo/input.csv")
 
-
-def relative_to_assets(path: str) -> Path:
-    return ASSETS_PATH / Path(path)
 
 
 def input():
@@ -45,9 +39,6 @@ class Input(Frame):
         # Show the screen of the button pressed
         self.windows[name].place(x=0, y=0, width=1013.0, height=506.0)
     
-    def update(self, df):
-        self.windows["view"].insert_input(df)
-
-
-    
+    def refresh_view(self, df):
+        self.windows["view"].insert_input(df)    
 

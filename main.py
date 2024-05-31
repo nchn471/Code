@@ -9,5 +9,4 @@ root.withdraw()  # WithDraw the window
 if __name__ == "__main__":
 
     mainWindow()
-
     root.mainloop()

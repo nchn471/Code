@@ -7,6 +7,7 @@ import pandas as pd
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 DATA_PATH = OUTPUT_PATH.parent.parent.parent / Path("./algo")
+from gui.config import *
 
 
 def relative_to_assets(path: str) -> Path:
@@ -190,7 +191,7 @@ class CreateInput(Frame):
             anchor="nw",
             text="Create Problem Input",
             fill="#5E95FF",
-            font=("Montserrat Bold", 26 * -1),
+            font=(FONT_BOLD, 26 * -1),
         )
 
         self.canvas.create_text(
@@ -199,7 +200,7 @@ class CreateInput(Frame):
             anchor="nw",
             text="Actions:",
             fill="#5E95FF",
-            font=("Montserrat Bold", 26 * -1),
+            font=(FONT_BOLD, 26 * -1),
         )
 
         self.canvas.create_text(
@@ -208,7 +209,7 @@ class CreateInput(Frame):
             anchor="nw",
             text="Type your constrains and function",
             fill="#808080",
-            font=("Montserrat SemiBold", 16 * -1),
+            font=("FONT", 16 * -1),
         )
 
         self.button_image_5 = PhotoImage(file=relative_to_assets("button_5.png"))
@@ -264,27 +265,27 @@ class CreateInput(Frame):
         self.add_row_btn.place(x=348, y=359, width=110, height=48)
         # Remove Row button
         self.button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
-        self.remove_row_btn = Button(
-            self,
-            image=self.button_image_3,  # You can use a different image if you want
-            borderwidth=0,
-            highlightthickness=0,
-            command=self.table.remove_row,
-            relief="flat",
-        )
-        self.remove_row_btn.place(x=465, y=359, width=160, height=48)
-
-        # Remove Column button
-        self.button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
         self.remove_col_btn = Button(
             self,
-            image=self.button_image_4,  # You can use a different image if you want
+            image=self.button_image_3,  # You can use a different image if you want
             borderwidth=0,
             highlightthickness=0,
             command=self.table.remove_column,
             relief="flat",
         )
-        self.remove_col_btn.place(x=632, y=359, width=110, height=48)
+        self.remove_col_btn.place(x=465, y=359, width=160, height=48)
+
+        # Remove Column button
+        self.button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
+        self.remove_row_btn = Button(
+            self,
+            image=self.button_image_4,  # You can use a different image if you want
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.table.remove_row,
+            relief="flat",
+        )
+        self.remove_row_btn.place(x=632, y=359, width=110, height=48)
 
     def is_valid(self, df):
         n_cols = len(df.columns)
@@ -321,4 +322,5 @@ class CreateInput(Frame):
             messagebox.showinfo("Success", "Saved successfully.")
         else:
             messagebox.showerror("Error", "Contains invalid values.")
-        self.parent.update(df)
+        self.parent.refresh_view(df)
+        self.parent.parent.linear_programing_solver(df)

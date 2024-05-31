@@ -1,4 +1,3 @@
-from pathlib import Path
 from tkinter import (
     Toplevel,
     Frame,
@@ -12,17 +11,15 @@ from gui.about.main import About
 from gui.graphical_method.main import Graph
 from gui.input.main import Input
 from gui.simplex_method.main import Simplex
+from gui.config import *
 
-
-
+from pathlib import Path
 OUTPUT_PATH = Path(__file__).parent
+DATA_PATH = OUTPUT_PATH.parent.parent / "algo" / "input.csv"
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-
 def relative_to_assets(path: str) -> Path:
+
     return ASSETS_PATH / Path(path)
-
-
 def mainWindow():
     MainWindow()
 
@@ -120,7 +117,7 @@ class MainWindow(Toplevel):
             anchor="nw",
             text="Hello",
             fill="#5E95FF",
-            font=("Montserrat Bold", 26 * -1),
+            font=(FONT_BOLD, 26 * -1),
         )
 
         self.canvas.create_text(
@@ -129,7 +126,7 @@ class MainWindow(Toplevel):
             anchor="nw",
             text="HCMUS",
             fill="#FFFFFF",
-            font=("Montserrat Bold", 36 * -1),
+            font=(FONT_BOLD, 36 * -1),
         )
 
         self.canvas.create_text(
@@ -138,7 +135,7 @@ class MainWindow(Toplevel):
             anchor="nw",
             text="NCHN",
             fill="#808080",
-            font=("Montserrat Bold", 16 * -1),
+            font=(FONT_BOLD, 16 * -1),
         )
 
         self.canvas.create_text(
@@ -147,7 +144,7 @@ class MainWindow(Toplevel):
             anchor="nw",
             text="(The screens below",
             fill="#5E95FF",
-            font=("Montserrat Bold", 48 * -1),
+            font=(FONT_BOLD, 48 * -1),
         )
 
         self.canvas.create_text(
@@ -156,7 +153,7 @@ class MainWindow(Toplevel):
             anchor="nw",
             text="will come here)",
             fill="#5E95FF",
-            font=("Montserrat Bold", 48 * -1),
+            font=(FONT_BOLD, 48 * -1),
         )
 
         # Loop through windows and place them
@@ -193,3 +190,7 @@ class MainWindow(Toplevel):
         # Handle label change
         current_name = self.windows.get(name)._name.split("!")[-1].capitalize()
         self.canvas.itemconfigure(self.heading, text=current_name)
+
+    def linear_programing_solver(self,df):
+        self.windows["graph"].show_graph_frame(df)
+        self.windows["simplex"].show_results(df)
